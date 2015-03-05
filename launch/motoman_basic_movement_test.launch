@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" value="false" />
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+  
+  <!-- include moveit planning_execution launch file  -->
+  <include file="$(find motoman_sda10f_moveit_config)/launch/moveit_planning_execution.launch">
+    <arg name="sim" value="false" />
+    <arg name="robot_ip" value="192.168.0.2" />
+    <arg name="controller" value="fs100" />
+    <arg name="version0" value="false" />
+  </include> 
+      
+  <!--  Run motoman_basic_movement_test node with move_group params -->
+  <node name="motoman_basic_movement_test"
+	pkg="motoman_basic_movement_test"
+	type="motoman_basic_movement_test"
+	output="screen" >
+    
+    <rosparam>
+      planning_time: 10
+      orientation_tolerance: 0.02
+      position_tolerance: 0.02
+      planning_attempts: 1
+    </rosparam>
+    
+  </node> 
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find motoman_sda10f_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+  </include>  
+  
+</launch>
