@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" value="false" />
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+  
+  <!-- include moveit planning_execution launch file  -->
+  <include file="$(find motoman_sda10f_moveit_config)/launch/demo.launch" /> 
+      
+  <!--  Run motoman_basic_movement_test node with move_group params -->
+  <node name="motoman_basic_movement_test"
+	pkg="motoman_basic_movement_test"
+	type="motoman_basic_movement_test"
+	output="screen" >
+    
+    <rosparam>
+      planning_time: 10
+      orientation_tolerance: 0.02
+      position_tolerance: 0.02
+      planning_attempts: 1
+    </rosparam>
+    
+  </node> 
+
+  
+</launch>
